@@ -11,6 +11,7 @@ env:
   ECS_CLUSTER: medusa-cluster
   ECS_SERVICE: medusa-service
   ECS_TASK_DEFINITION: .github/workflows/task-definition.json
+  ECS_TASK_DEFINITION_FAMILY: medusa
 
 jobs:
   deploy:
@@ -42,10 +43,11 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-      - name: Download task definition
+      - name: Download task definition 
         run: |
-          aws ecs describe-task-definition --task-definition ${{ env.ECS_SERVICE }} \
-          --query taskDefinition > task-definition.json
+                aws ecs describe-task-definition --task-definition ${{ env.ECS_TASK_DEFINITION_FAMILY }} \
+    --query taskDefinition > task-definition.json
+         
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
