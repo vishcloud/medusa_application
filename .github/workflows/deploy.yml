@@ -1,10 +1,9 @@
-cat > deploy.yml << 'EOF'
 name: Deploy Medusa to AWS ECS
 
 on:
   push:
     branches:
-      - main
+      - master
 
 env:
   AWS_REGION: us-west-1
@@ -63,4 +62,3 @@ jobs:
           service: ${{ env.ECS_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
-EOF
